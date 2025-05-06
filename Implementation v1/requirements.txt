@@ -1,6 +1,0 @@
-streamlit
-pymupdf
-sentence-transformers
-pandas
-scikit-learn
-matplotlib
