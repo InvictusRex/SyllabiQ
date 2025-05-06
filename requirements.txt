@@ -1,0 +1,6 @@
+streamlit
+openai
+PyMuPDF
+pdf2image
+pytesseract
+python-dotenv
