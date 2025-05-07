@@ -10,10 +10,10 @@ pyq_pdf = st.file_uploader("📄 Upload PYQ PDF", type="pdf")
 
 if syllabus_pdf and pyq_pdf:
     with st.spinner("🔍 Extracting syllabus..."):
-        syllabus_text = extract_text_from_pdf(syllabus_pdf)
+        syllabus_text = extract_text_from_pdf(syllabus_pdf, force_ocr=False)  # Normal processing for syllabus
 
     with st.spinner("🔍 Extracting PYQ content..."):
-        pyq_text = extract_text_from_pdf(pyq_pdf)
+        pyq_text = extract_text_from_pdf(pyq_pdf, force_ocr=True)  # Force OCR for PYQ
 
     # Reduce token load
     syllabus_lines = syllabus_text.split("\n")
