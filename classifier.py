@@ -1,38 +1,23 @@
 import os
-import requests
+import google.generativeai as genai
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+load_dotenv()
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-url = "https://fast.typegpt.net/v1/chat/completions"
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {OPENAI_API_KEY}"
-}
+genai.configure(api_key=GOOGLE_API_KEY)
 
-def classify_questions_with_gpt(syllabus_topics, questions):
-    prompt = (
-        "You are a helpful assistant. You are given a list of topics from a syllabus and a list of exam questions.\n"
-        "Your task is to categorize each question under the most relevant topic.\n"
-        "Return a JSON dictionary with the topic as the key and a list of questions under that topic as the value.\n"
-        "Here are the topics:\n"
-        f"{syllabus_topics}\n\n"
-        "Here are the questions:\n"
-        f"{questions}\n"
-    )
-
-    data = {
-        "model": "gpt-4o",
-        "messages": [
-            {"role": "user", "content": prompt}
-        ]
-    }
-
+def ask_gpt(messages):
     try:
-        response = requests.post(url, headers=headers, json=data)
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as e:
-        print(f"Error calling GPT API: {e}")
-        return None
+        prompt = "\n".join([msg["content"] for msg in messages])
+
+        # Initialize Gemini model inside function (v1 compatible)
+        model = genai.GenerativeModel(model_name="models/gemini-2.0-flash")
+
+        # Use generate_content for simple prompts
+        response = model.generate_content(prompt)
+        return response.text
+
+    except Exception as e:
+        print(f"❌ Gemini API Error: {e}")
+        return "Error: Failed to get a response from Gemini."

@@ -1,6 +1,6 @@
 streamlit
-openai
+python-dotenv
 PyMuPDF
 pdf2image
 pytesseract
-python-dotenv
+google-generativeai
